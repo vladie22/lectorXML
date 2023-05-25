@@ -5,8 +5,7 @@
     </head>
 
     <body>
-        <form wire:submit.prevent="store" action="" method="POST" enctype="multipart/form-data"
-            class="grid grid-cols-3 gap-6 my-4 mx-4 p-12">
+        <form action="" method="POST" enctype="multipart/form-data" class="grid grid-cols-3 gap-6 my-4 mx-4 p-12">
             @csrf
             <div class="rounded-lg border border-sky-500 divide-y divide-slate-200 w-3/4">
                 <div class="mx-8 my-6">
@@ -56,8 +55,8 @@
                 @if ($noDataYet)
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                         role="alert">
-                        <strong class="font-bold">Demonios viejo!</strong>
-                        <span class="block sm:inline">No has cargado el XML, eres autista o pendejo?</span>
+                        <strong class="font-bold">Ups!, ha ocurrido un error</strong>
+                        <span class="block sm:inline">No has cargado el XML, favor de verificar!</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
                             <svg wire:click="closeNoDataYet()" class="fill-current h-6 w-6 text-red-500" role="button"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -71,7 +70,7 @@
                 @if ($repeatUuidAlert)
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                         role="alert">
-                        <strong class="font-bold">Demonios viejo!</strong>
+                        <strong class="font-bold">Ups!, ha ocurrido un error</strong>
                         <span class="block sm:inline">Este CFDI ya se ha registrado</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
                             <svg wire:click="closeRepeatUuidAlert()" class="fill-current h-6 w-6 text-red-500"
@@ -83,7 +82,7 @@
                         </span>
                     </div>
                 @endif
-                @if ($claveProductoAlert)
+                {{-- @if ($claveProductoAlert)
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                         role="alert">
                         <strong class="font-bold">Demonios viejo!</strong>
@@ -97,7 +96,7 @@
                             </svg>
                         </span>
                     </div>
-                @endif
+                @endif --}}
             </div>
             <div>
                 {{-- AGREGAR GIF LOADING --}}

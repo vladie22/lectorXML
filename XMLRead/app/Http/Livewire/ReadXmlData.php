@@ -73,15 +73,8 @@ class ReadXmlData extends Component
             $repeatUuid = XmlData::where('uuid','=',$this->uuid)->exists();
             //verify if uuid is repeated or already exist
             if($repeatUuid == false){
-                //verify if claveProducto value is 10101802
-                if($this->claveProducto == '10101802'){
                     //show data in DOM
                     $this->showData = true;
-                }
-                else{
-                    //show "claveProducto" warning alert
-                    $this->claveProductoAlert = true;;
-                }
             }
             else{
                 // show "repeatUuid" warning alert
@@ -99,7 +92,7 @@ class ReadXmlData extends Component
        //verify if "uuid" is repeated or already exist
         if(XmlData::where('uuid','=',$this->uuid)->exists() == false){
             //Save data
-            XmlData::create([
+            XmlData::updateOrCreate([
                 'fecha' => $this->fecha,
                 'rfc' => $this->rfc,
                 'nombre' => $this->nombre,
@@ -120,13 +113,13 @@ class ReadXmlData extends Component
                     'monto_total' => $montoTotal
                 ]);
                 //success alert
-                $this->alert('success','Exito Viejo! :)');
+                $this->alert('success','La factura ha sido registrada');
                 $this->showData = false;
             }else{
                 $montoTotal = $this->cantidad * 200;
                 QuantityData::where('rfc','=',$this->rfc)->increment('cantidad_total',$this->cantidad);
                 QuantityData::where('rfc','=',$this->rfc)->increment('monto_total',$montoTotal);
-                $this->alert('success','Exito Viejo!2 :)');
+                $this->alert('success','La factura ha sido registrada');
                 $this->showData = false;
             }
         }else{

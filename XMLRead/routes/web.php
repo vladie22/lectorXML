@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\FacturaTotalData;
 use App\Http\Livewire\LoginRegister;
 use App\Http\Livewire\ReadXmlData;
 use App\Http\Livewire\ShowData;
@@ -23,3 +24,4 @@ Route::get('/',ReadXmlData::class)->middleware('auth')->name('readXmlData');
 Route::get('/tabla',ShowData::class)->middleware('auth')->name('showData');
 Route::get('/tabla-kilogramos',ShowQuantity::class)->middleware('auth')->name('showQuantity');
 Route::get('/login',LoginRegister::class)->name('login');
+Route::get('/facturas_av',FacturaTotalData::class)->name('facturaTotalData');

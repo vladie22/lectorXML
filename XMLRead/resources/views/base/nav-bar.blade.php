@@ -26,6 +26,7 @@
                   <a href="{{route('readXmlData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Registro Factura</a>
                   <a href="{{route('showData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Tabla Registro</a>
                   <a href="{{route('showQuantity')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Tabla Kilogramos</a>
+                  <a href="{{route('facturaTotalData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Factura Alfa</a>
                 </div>
               </div>
             </div>
