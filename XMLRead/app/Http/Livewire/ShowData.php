@@ -32,11 +32,11 @@ class ShowData extends Component
         redirect(route('login'));
     }
     //Change the status from "Sin pagar" to "Pagado"
-    public function pagadoNoToSi($id)
-    {
-        XmlData::where('id',$id)->update(['estado'=>'Pagado']);
-        $this->alert('success','Se ha pagado la factura!');
-    }
+    // public function pagadoNoToSi($id)
+    // {
+    //     XmlData::where('id',$id)->update(['estado'=>'Pagado']);
+    //     $this->alert('success','Se ha pagado la factura!');
+    // }
     // Delete a row
     public function destroy($id){
         XmlData::destroy($id);

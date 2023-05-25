@@ -32,7 +32,7 @@
                                 class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="uuid">UUID</option>
                                 <option value="rfc">RFC</option>
-                                <option value="estado">Estado</option>
+                                <option value="nombre">Nombre</option>
                             </select>
                             <div
                                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -86,10 +86,10 @@
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                         Monto ($)
                                     </th>
-                                    <th
+                                    {{-- <th
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                         Pagado
-                                    </th>
+                                    </th> --}}
                                     <th
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                         Eliminar
@@ -130,7 +130,7 @@
                                                     ${{ number_format($factura->total, 2, '.', ',') }}
                                                 </p>
                                             </td>
-                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 @if ($factura->estado == 'Pagado')
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         <span
@@ -149,15 +149,15 @@
                                                             class="pointerGG relative">{{ $factura->estado }}</span>
                                                     </span>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <span
+                                                <button
                                                     class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                                                     <span aria-hidden
                                                         class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
                                                     <span wire:click="destroy({{ $factura->id }})"
                                                         class="pointerGG relative">Eliminar</span>
-                                                </span>
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
