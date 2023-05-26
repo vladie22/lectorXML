@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\QuantityData;
 use App\Models\XmlData;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,7 +14,7 @@ class ShowData extends Component
     use LivewireAlert;
     use WithPagination;
     //declare public variables and set the initial value
-    public $search, $searchOptions = 'uuid', $limit = 5;
+    public $search, $searchOptions = 'nombre', $limit = 5;
 
     public function render()
     {
@@ -39,8 +40,14 @@ class ShowData extends Component
     // }
     // Delete a row
     public function destroy($id){
+        $rfc = XmlData::where('id',$id)->first()->rfc;
+        $cantidad = floatval(XmlData::where('id',$id)->first()->cantidad);
         XmlData::destroy($id);
+        QuantityData::where('rfc',$rfc)->decrement('cantidad_total',$cantidad);
+        if(floatval(QuantityData::where('rfc',$rfc)->first()->cantidad_total) == 0){
+            $idCantidadTotal = QuantityData::where('rfc',$rfc)->first()->id;
+            QuantityData::destroy($idCantidadTotal);
+        }
         $this->alert('success','La factura ha sido eliminada!');
-
     }
 }

@@ -8,7 +8,7 @@
         <div class="container mx-auto px-4 sm:px-8">
             <div class="py-8">
                 <div>
-                    <h2 class="text-2xl font-bold leading-tight">Kilogramos</h2>
+                    <h2 class="text-2xl font-bold leading-tight">Cooperativas</h2>
                 </div>
                 <div class="my-2 flex sm:flex-row flex-col">
                     <div class="flex flex-row mb-1 sm:mb-0">

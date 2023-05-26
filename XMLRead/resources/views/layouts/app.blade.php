@@ -11,7 +11,8 @@
     <script src="sweetalert2.min.js"></script>
     <link rel="stylesheet" href="sweetalert2.min.css">
     {{-- Title --}}
-    <title>Read xml</title>
+    <title>Control Generosa</title>
+    <link rel="icon" href="{{asset('images/logoAV.jpg')}}">
     <!-- Alpine v3 -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Focus plugin -->

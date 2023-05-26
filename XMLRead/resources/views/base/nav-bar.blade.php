@@ -23,9 +23,9 @@
               <div class="hidden sm:ml-6 sm:block">
                 <div class="flex space-x-4">
                   <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                  <a href="{{route('readXmlData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Registro Factura</a>
-                  <a href="{{route('showData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Tabla Registro</a>
-                  <a href="{{route('showQuantity')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Tabla Kilogramos</a>
+                  <a href="{{route('readXmlData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Registro Deriva</a>
+                  <a href="{{route('showData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Derivas</a>
+                  <a href="{{route('showQuantity')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Cooperativas</a>
                   <a href="{{route('facturaTotalData')}}" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Factura Alfa</a>
                 </div>
               </div>

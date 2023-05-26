@@ -8,7 +8,7 @@
         <div class="container mx-auto px-4 sm:px-8">
             <div class="py-8">
                 <div>
-                    <h2 class="text-2xl font-bold leading-tight">Facturas</h2>
+                    <h2 class="text-2xl font-bold leading-tight">Derivas</h2>
                 </div>
                 <div class="my-2 flex sm:flex-row flex-col">
                     <div class="flex flex-row mb-1 sm:mb-0">
@@ -32,6 +32,7 @@
                                 class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                 <option value="uuid">UUID</option>
                                 <option value="rfc">RFC</option>
+                                <option value="cantidad">Kilogramos</option>
                                 <option value="nombre">Nombre</option>
                             </select>
                             <div
@@ -197,7 +198,7 @@
                                                     ${{ number_format($uuid->total, 2, '.', ',') }}
                                                 </p>
                                             </td>
-                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 @if ($uuid->estado == 'Pagado')
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         <span
@@ -217,7 +218,7 @@
                                                     </span>
                                                 @endif
 
-                                            </td>
+                                            </td> --}}
                                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <span
                                                     class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">

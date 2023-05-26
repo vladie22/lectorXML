@@ -15,7 +15,7 @@ class ShowQuantity extends Component
     use LivewireAlert;
     use WithPagination;
 
-    public $search,  $searchOptions = 'rfc', $limit = 5;
+    public $search,  $searchOptions = 'nombre', $limit = 5;
     public function render()
     {
         $search = '%' . $this->search . '%';

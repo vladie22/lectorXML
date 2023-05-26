@@ -10,8 +10,8 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class LoginRegister extends Component
 {
-    use LivewireAlert;
-    public $email, $password;
+        use LivewireAlert;
+        public $email, $password;
 
     protected $rules = [
         'email' => 'required|email',
