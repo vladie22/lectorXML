@@ -82,13 +82,13 @@
                         </span>
                     </div>
                 @endif
-                {{-- @if ($claveProductoAlert)
+                @if ($repeatArriboAlert)
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
                         role="alert">
                         <strong class="font-bold">Demonios viejo!</strong>
-                        <span class="block sm:inline">La clave del producto no es correcta.</span>
+                        <span class="block sm:inline">Este arribo ya ha sido ultilizado.</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                            <svg wire:click="closeClaveProductoAlert()" class="fill-current h-6 w-6 text-red-500"
+                            <svg wire:click="closeArriboAlert()" class="fill-current h-6 w-6 text-red-500"
                                 role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <title>Close</title>
                                 <path
@@ -96,7 +96,7 @@
                             </svg>
                         </span>
                     </div>
-                @endif --}}
+                @endif
             </div>
             <div>
                 {{-- AGREGAR GIF LOADING --}}
@@ -142,6 +142,10 @@
                             <div class="flex flex-row">
                                 <label class="font-semibold text-lg" for="">Clave Producto:&nbsp</label>
                                 <div>{{ $claveProducto }}</div>
+                            </div>
+                            <div class="flex flex-row">
+                                <label class="font-semibold text-lg" for="">Arribo:&nbsp</label>
+                                <div>{{ $arribo }}</div>
                             </div>
                         </div>
                         <div class=" flex flex-row justify-end">

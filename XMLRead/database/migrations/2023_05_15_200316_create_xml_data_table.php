@@ -26,6 +26,7 @@ class CreateXmlDataTable extends Migration
             $table->string('claveProdServ')->nullable();
             $table->string('estado')->nullable();
             $table->string('folioAlfa')->nullable();
+            $table->string('arribo')->nullable();
 
             $table->timestamps();
         });

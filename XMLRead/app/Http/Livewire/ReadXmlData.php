@@ -16,8 +16,9 @@ class ReadXmlData extends Component
     use WithFileUploads;
     use LivewireAlert;
 
-    public $xml, $showData = false, $noDataYet = false, $claveProductoAlert= false, $repeatUuidAlert = false;
-    public $fecha,$rfc, $nombre, $folio, $uuid, $cantidad, $total, $claveProducto, $precioUnitario;
+    public $xml, $showData = false, $noDataYet = false, $claveProductoAlert= false, $repeatUuidAlert = false,
+            $repeatArriboAlert = false ;
+    public $fecha,$rfc, $nombre, $folio, $uuid, $cantidad, $total, $claveProducto, $precioUnitario,$arribo;
 
     public function render()
     {
@@ -30,6 +31,9 @@ class ReadXmlData extends Component
         redirect(route('login'));
     }
 
+    public function closeArriboAlert(){
+        $this->repeatArriboAlert = false;
+    }
     //close "no data yet" warning alert
     public function closeNoDataYet(){
         $this->noDataYet = false;
@@ -69,12 +73,23 @@ class ReadXmlData extends Component
             $this->total = floatval((string)$xmlData['Total']);
             $this->claveProducto = (string)$xmlData->Conceptos->Concepto['ClaveProdServ'];
             $this->precioUnitario = $this->total/$this->cantidad;
+            // getting arribo
+            $stringDescripcion = (string)$xmlData->Conceptos->Concepto['Descripcion'];
+            $posArribo = strpos($stringDescripcion,'BE');
+            $this->arribo = substr($stringDescripcion,$posArribo,12);
             //asking to eloquent if a data like this exists
             $repeatUuid = XmlData::where('uuid','=',$this->uuid)->exists();
+            $repeatArribo = XmlData::where('arribo','=',$this->arribo)->exists();
             //verify if uuid is repeated or already exist
             if($repeatUuid == false){
-                    //show data in DOM
-                    $this->showData = true;
+                if($repeatArribo == false){
+                     //show data in DOM
+                     $this->showData = true;
+                }
+                else{
+                    $this->repeatArriboAlert = true;
+                }
+
             }
             else{
                 // show "repeatUuid" warning alert
@@ -102,7 +117,8 @@ class ReadXmlData extends Component
                 'total' => $this->total,
                 'precioUnitario' => $this->precioUnitario,
                 'claveProdServ' => $this->claveProducto,
-                'estado' => 'Sin usar'
+                'estado' => 'Sin usar',
+                'arribo' => $this->arribo
             ]);
             if(QuantityData::where('rfc','=',$this->rfc)->exists() == false){
                 $montoTotal = $this->cantidad * 200;
