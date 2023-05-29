@@ -102,7 +102,7 @@ class ReadXmlData extends Component
                 'total' => $this->total,
                 'precioUnitario' => $this->precioUnitario,
                 'claveProdServ' => $this->claveProducto,
-                'estado' => 'Sin pagar'
+                'estado' => 'Sin usar'
             ]);
             if(QuantityData::where('rfc','=',$this->rfc)->exists() == false){
                 $montoTotal = $this->cantidad * 200;

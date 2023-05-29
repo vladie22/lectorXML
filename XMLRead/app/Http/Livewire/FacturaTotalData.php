@@ -12,13 +12,23 @@ class FacturaTotalData extends Component
 {
 
     use LivewireAlert;
-    public $folio, $cantidad, $cantidadTotalFacturas;
+    public $folio, $cantidad, $cantidadTotalFacturas,$generarFactura = false;
     public $search,  $searchOptions = 'folio', $limit = 5;
 
     protected $rules = [
         'folio' => 'required',
         'cantidad' => 'required'
     ];
+
+    public function generarFacturaShow()
+    {
+        $this->generarFactura = true;
+    }
+    public function generarFacturaClose()
+    {
+        dd($this->folio);
+        $this->generarFactura = false;
+    }
 
     public function render()
     {
@@ -35,6 +45,11 @@ class FacturaTotalData extends Component
             'facturas' => FacturaAlfa::orderBy('cantidad','DESC')->paginate($limit),
             'searchFacturas' => FacturaAlfa::where($searchOptions, 'like', $search)->orderBy('cantidad','DESC')->simplePaginate($limit)
         ]);
+    }
+
+    public function preGenerar()
+    {
+
     }
 
     public function generate()

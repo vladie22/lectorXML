@@ -16,6 +16,7 @@ class ShowData extends Component
     //declare public variables and set the initial value
     public $search, $searchOptions = 'nombre', $limit = 5;
 
+
     public function render()
     {
         $search = '%' . $this->search . '%';
