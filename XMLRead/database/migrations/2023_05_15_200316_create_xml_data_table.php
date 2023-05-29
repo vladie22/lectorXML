@@ -25,6 +25,7 @@ class CreateXmlDataTable extends Migration
             $table->decimal('precioUnitario',10,2)->nullable();
             $table->string('claveProdServ')->nullable();
             $table->string('estado')->nullable();
+            $table->string('folioAlfa')->nullable();
 
             $table->timestamps();
         });

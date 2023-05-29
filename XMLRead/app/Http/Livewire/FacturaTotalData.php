@@ -12,8 +12,9 @@ class FacturaTotalData extends Component
 {
 
     use LivewireAlert;
-    public $folio, $cantidad, $cantidadTotalFacturas,$generarFactura = false;
-    public $search,  $searchOptions = 'folio', $limit = 5;
+    public $folioAlfa, $cantidad, $cantidadTotalFacturas,$generarFactura = false;
+    public $search,  $searchOptions = 'folio', $limit = 5,$cantidadTotalAlfaNueva;
+    public $searchData, $searchOptionsData = 'uuid';
 
     protected $rules = [
         'folio' => 'required',
@@ -26,30 +27,38 @@ class FacturaTotalData extends Component
     }
     public function generarFacturaClose()
     {
-        dd($this->folio);
         $this->generarFactura = false;
     }
 
     public function render()
     {
         $search = '%' . $this->search . '%';
+        $searchData = '%' . $this->searchData . '%';
         $searchOptions = $this->searchOptions;
+        $searchOptionsData = $this->searchOptionsData;
         $limit = $this->limit;
         $cantidadTotal = QuantityData::sum('cantidad_total');
         $cantidadTotal2 = XmlData::sum('cantidad');
         $cantidadTotalAlfa = FacturaAlfa::sum('cantidad');
+        $this->cantidadTotalAlfaNueva = XmlData::where('folioAlfa',$this->folioAlfa)->sum('cantidad');
         if($cantidadTotal == $cantidadTotal2){
             $this->cantidadTotalFacturas = abs($cantidadTotalAlfa-$cantidadTotal);
         }
         return view('livewire.factura-total-data',[
+            'derivas' => XmlData::where('folioAlfa',$this->folioAlfa)->orWhere('estado','Usado')
+                                    ->where('folioAlfa',null)->orWhere('estado','Sin usar')
+                                    ->orderBy('id','DESC')->paginate($limit),
+            'busquedas' => XmlData::where('folioAlfa',$this->folioAlfa)->orWhere('folioAlfa',null)->where($searchOptionsData, 'like', $searchData)->where('estado','Sin usar')->orderBy('id','DESC')->paginate($limit),
             'facturas' => FacturaAlfa::orderBy('cantidad','DESC')->paginate($limit),
             'searchFacturas' => FacturaAlfa::where($searchOptions, 'like', $search)->orderBy('cantidad','DESC')->simplePaginate($limit)
         ]);
     }
 
-    public function preGenerar()
+    public function usado($id)
     {
-
+        XmlData::where('id',$id)->update(['folioAlfa' => $this->folioAlfa,
+                                            'estado' => 'Usado']);
+        $this->toast('success','La deriva se ha agreado a la factura con exito!');
     }
 
     public function generate()

@@ -87,10 +87,10 @@
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                         Monto ($)
                                     </th>
-                                    {{-- <th
+                                    <th
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
-                                        Pagado
-                                    </th> --}}
+                                        Estado
+                                    </th>
                                     <th
                                         class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                         Eliminar
@@ -131,8 +131,8 @@
                                                     ${{ number_format($factura->total, 2, '.', ',') }}
                                                 </p>
                                             </td>
-                                            {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                @if ($factura->estado == 'Pagado')
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                @if ($factura->estado == 'Usado')
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         <span
                                                             class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -141,16 +141,15 @@
                                                             <span class="relative">{{ $factura->estado }}</span>
                                                         </span>
                                                     </p>
-                                                @elseif($factura->estado == 'Sin pagar')
+                                                @elseif($factura->estado == 'Sin usar')
                                                     <span
                                                         class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
                                                         <span aria-hidden
                                                             class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="pagadoNoToSi({{ $factura->id }})"
-                                                            class="pointerGG relative">{{ $factura->estado }}</span>
+                                                        <span class="relative">{{ $factura->estado }}</span>
                                                     </span>
                                                 @endif
-                                            </td> --}}
+                                            </td>
                                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <button
                                                     class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
@@ -198,8 +197,8 @@
                                                     ${{ number_format($uuid->total, 2, '.', ',') }}
                                                 </p>
                                             </td>
-                                            {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                @if ($uuid->estado == 'Pagado')
+                                            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                @if ($uuid->estado == 'Usado')
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         <span
                                                             class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -208,17 +207,15 @@
                                                             <span class="relative">{{ $uuid->estado }}</span>
                                                         </span>
                                                     </p>
-                                                @elseif($uuid->estado == 'Sin pagar')
+                                                @elseif($uuid->estado == 'Sin usar')
                                                     <span
                                                         class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
                                                         <span aria-hidden
                                                             class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="pagadoNoToSi({{ $uuid->id }})"
-                                                            class="pointerGG relative">{{ $uuid->estado }}</span>
+                                                        <span class="pointerGG relative">{{ $uuid->estado }}</span>
                                                     </span>
                                                 @endif
-
-                                            </td> --}}
+                                            </td>
                                             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <span
                                                     class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">

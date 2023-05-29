@@ -10,6 +10,7 @@
                 <div>
                     <h2 class="text-2xl font-bold leading-tight">Facturas</h2>
                 </div>
+                {{-- Vista sin generar factura muestra solo el boton --}}
                 @if ($generarFactura == false)
                     <div class="py-4 grid grid-cols-2 gap-4">
                         <div>
@@ -34,19 +35,20 @@
                         </div>
                     </div>
                 @endif
+                {{-- Vista para generar factura --}}
                 @if ($generarFactura == true)
                     <div class="grid grid-cols-2 gap-8">
                         <div>
                             <form action="" method="POST" enctype="multipart/form-data"
                                 class="border border-sky-500 divide-y divide-slate-200
                                      bg-slate-200 rounded-lg">
+                                @csrf
                                 <div class="grid grid-cols-2 gap-4 my-4 w-full">
 
 
                                     <div class="p-4">
                                         <label class="font-semibold text-lg" for="folio">Folio</label>
-                                        <input id="folio" placeholder="#" wire:model="folio"
-                                            wire:click='preGenerar()'
+                                        <input id="folio" placeholder="#" wire:model="folioAlfa"
                                             class="appearance-none rounded-r rounded-l
                                 sm:rounded-l-none border border-gray-400 border-b block
                                 pl-8 pr-6 py-2 w-3/4 bg-white text-sm placeholder-gray-400
@@ -57,15 +59,11 @@
 
                                     </div>
                                     <div class="p-4">
-                                        <label class="font-semibold text-lg" for="cantidad">Cantidad</label>
-                                        <input id="cantidad" placeholder="Kg" wire:model="cantidad"
-                                            class="appearance-none rounded-r rounded-l
-                                sm:rounded-l-none border border-gray-400 border-b block
-                                pl-8 pr-6 py-2 w-3/4 bg-white text-sm placeholder-gray-400
-                                text-gray-700 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
-                                        @error('cantidad')
-                                            <span class="text-gray-500 text-sm">{{ $message }}</span>
-                                        @enderror
+                                        @if ($folioAlfa != null)
+                                            <div class="text-2xl font-bold">
+                                                Cantidad Factura: {{ $cantidadTotalAlfaNueva }} Kg
+                                            </div>
+                                        @endif
 
 
                                     </div>
@@ -94,15 +92,14 @@
                                 <div class="text-2xl font-bold">
                                     Disponibles: {{ $cantidadTotalFacturas }} Kg
                                 </div>
-
                             </div>
 
                         </div>
                     </div>
                 @endif
 
-                {{-- 88888888888888888888888888888888888888 --}}
-                @if ($generarFactura == true)
+                {{-- Vista seleccionar derivas para factura alfa --}}
+                @if ($generarFactura == true && $folioAlfa != null)
                     <div class="my-2 flex sm:flex-row flex-col">
                         <div class="flex flex-row mb-1 sm:mb-0">
                             <div class="relative">
@@ -122,7 +119,7 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <select wire:model='searchOptions'
+                                <select wire:model='searchOptionsData'
                                     class="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                                     <option value="uuid">UUID</option>
                                     <option value="rfc">RFC</option>
@@ -147,7 +144,7 @@
                                     </path>
                                 </svg>
                             </span>
-                            <input placeholder="Buscar" wire:model="search"
+                            <input placeholder="Buscar" wire:model="searchData"
                                 class="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                         </div>
                     </div>
@@ -181,71 +178,72 @@
                                             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                             Monto ($)
                                         </th>
-                                        {{-- <th
-                                        class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
-                                        Pagado
-                                    </th> --}}
-                                        <th
-                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
-                                            Eliminar
-                                        </th>
+                                        @if ($folioAlfa != null)
+                                            <th
+                                                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
+                                                Estado
+                                            </th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if (!$search)
-                                        @foreach ($facturas as $factura)
+                                    @if (!$searchData)
+                                        @foreach ($derivas as $deriva)
                                             <tr>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ substr($factura->fecha, 0, -9) }}
+                                                        {{ substr($deriva->fecha, 0, -9) }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $factura->rfc }}
+                                                        {{ $deriva->rfc }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $factura->nombre }}
+                                                        {{ $deriva->nombre }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $factura->uuid }}
+                                                        {{ $deriva->uuid }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $factura->cantidad }}
+                                                        {{ $deriva->cantidad }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        ${{ number_format($factura->total, 2, '.', ',') }}
+                                                        ${{ number_format($deriva->total, 2, '.', ',') }}
                                                     </p>
                                                 </td>
-                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                @if ($factura->estado == 'Pagado')
-                                                    <p class="text-gray-900 whitespace-no-wrap">
-                                                        <span
-                                                            class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                            <span aria-hidden
-                                                                class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                            <span class="relative">{{ $factura->estado }}</span>
-                                                        </span>
-                                                    </p>
-                                                @elseif($factura->estado == 'Sin pagar')
-                                                    <span
-                                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                                        <span aria-hidden
-                                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="pagadoNoToSi({{ $factura->id }})"
-                                                            class="pointerGG relative">{{ $factura->estado }}</span>
-                                                    </span>
+                                                @if ($folioAlfa != null)
+                                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                        @if ($deriva->estado == 'Usado')
+                                                            <p class="text-gray-900 whitespace-no-wrap">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                                    <span aria-hidden
+                                                                        class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                                                    <span class="relative">{{ $deriva->estado }}</span>
+                                                                </span>
+                                                            </p>
+                                                        @elseif($deriva->estado == 'Sin usar')
+                                                            <span
+                                                                class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
+                                                                <span aria-hidden
+                                                                    class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
+                                                                <span wire:click="usado({{ $deriva->id }})"
+                                                                    class="pointerGG relative">{{ $deriva->estado }}</span>
+                                                            </span>
+                                                        @endif
+                                                    </td>
                                                 @endif
-                                            </td> --}}
-                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                {{-- ELIMINAR REGISTROS --}}
+                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <button
                                                         class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                                                         <span aria-hidden
@@ -253,78 +251,81 @@
                                                         <span wire:click="destroy({{ $factura->id }})"
                                                             class="pointerGG relative">Eliminar</span>
                                                     </button>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
-                                        {{ $facturas->links() }}
+                                        {{ $derivas->links() }}
                                     @endif
 
-                                    @if ($search)
-                                        @foreach ($uuids as $uuid)
+                                    @if ($searchData)
+                                        @foreach ($busquedas as $busqueda)
                                             <tr>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ substr($uuid->fecha, 0, -9) }}
+                                                        {{ substr($busqueda->fecha, 0, -9) }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $uuid->rfc }}
+                                                        {{ $busqueda->rfc }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $uuid->nombre }}
+                                                        {{ $busqueda->nombre }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $uuid->uuid }}
+                                                        {{ $busqueda->uuid }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        {{ $uuid->cantidad }}
+                                                        {{ $busqueda->cantidad }}
                                                     </p>
                                                 </td>
                                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">
-                                                        ${{ number_format($uuid->total, 2, '.', ',') }}
+                                                        ${{ number_format($busqueda->total, 2, '.', ',') }}
                                                     </p>
                                                 </td>
-                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                @if ($uuid->estado == 'Pagado')
-                                                    <p class="text-gray-900 whitespace-no-wrap">
-                                                        <span
-                                                            class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                                                            <span aria-hidden
-                                                                class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                            <span class="relative">{{ $uuid->estado }}</span>
-                                                        </span>
-                                                    </p>
-                                                @elseif($uuid->estado == 'Sin pagar')
-                                                    <span
-                                                        class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
-                                                        <span aria-hidden
-                                                            class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="pagadoNoToSi({{ $uuid->id }})"
-                                                            class="pointerGG relative">{{ $uuid->estado }}</span>
-                                                    </span>
-                                                @endif
+                                                @if ($folioAlfa != null)
+                                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                        @if ($busqueda->estado == 'Usado')
+                                                            <p class="text-gray-900 whitespace-no-wrap">
+                                                                <span
+                                                                    class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                                                    <span aria-hidden
+                                                                        class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                                                    <span
+                                                                        class="relative">{{ $busqueda->estado }}</span>
+                                                                </span>
+                                                            </p>
+                                                        @elseif($busqueda->estado == 'Sin usar')
+                                                            <span
+                                                                class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
+                                                                <span aria-hidden
+                                                                    class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
+                                                                <span wire:click="usado({{ $busqueda->id }})"
+                                                                    class="pointerGG relative">{{ $busqueda->estado }}</span>
+                                                            </span>
+                                                        @endif
 
-                                            </td> --}}
-                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                    </td>
+                                                @endif
+                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                     <span
                                                         class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                                                         <span aria-hidden
                                                             class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="destroy({{ $uuid->id }})"
+                                                        <span wire:click="destroy({{ $busqueda->id }})"
                                                             class="pointerGG relative">Eliminar</span>
                                                     </span>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
-                                        {{ $uuids->links() }}
+                                        {{ $busquedas->links() }}
                                     @endif
 
                                 </tbody>
@@ -333,6 +334,11 @@
                     </div>
 
                 @endif
+
+
+
+                {{-- 555555555555555555555555555555555555555555555555555555555555555555555555555 --}}
+                {{-- Vista de facturas generadas --}}
                 @if ($generarFactura == false)
                     <div class="my-8 flex sm:flex-row flex-col">
                         <div class="flex flex-row mb-1 sm:mb-0">

@@ -13,6 +13,14 @@ return [
         'showCancelButton' => false,
         'showConfirmButton' => false
     ],
+    'toast' => [
+        'position' => 'top-end',
+        'timer' => 5000,
+        'toast' => true,
+        'text' => null,
+        'showCancelButton' => false,
+        'showConfirmButton' => false
+    ],
     'confirm' => [
         'icon' => 'warning',
         'position' => 'center',
