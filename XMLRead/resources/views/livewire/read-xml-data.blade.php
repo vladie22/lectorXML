@@ -82,21 +82,6 @@
                         </span>
                     </div>
                 @endif
-                @if ($repeatArriboAlert)
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-                        role="alert">
-                        <strong class="font-bold">Demonios viejo!</strong>
-                        <span class="block sm:inline">Este arribo ya ha sido ultilizado.</span>
-                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
-                            <svg wire:click="closeArriboAlert()" class="fill-current h-6 w-6 text-red-500"
-                                role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <title>Close</title>
-                                <path
-                                    d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                            </svg>
-                        </span>
-                    </div>
-                @endif
             </div>
             <div>
                 {{-- AGREGAR GIF LOADING --}}
@@ -107,6 +92,7 @@
             <div>
                 @if ($showData)
                     <div class="rounded-lg border border-sky-500 divide-y divide-slate-200 p-4 grid grid-cols-1 gap-4">
+                        <form action="">
                         <div class="flex flex-row">
                             <label class="font-bold text-xl">Verificacion de datos</label>
                         </div>
@@ -144,8 +130,15 @@
                                 <div>{{ $claveProducto }}</div>
                             </div>
                             <div class="flex flex-row">
-                                <label class="font-semibold text-lg" for="">Arribo:&nbsp</label>
-                                <div>{{ $arribo }}</div>
+                                <label class="font-semibold text-lg" for="arribo">Arribo:&nbsp</label>
+                                <input id="arribo" placeholder="#" wire:model="arribo"
+                                    class="appearance-none rounded-r rounded-l
+                                sm:rounded-l-none border border-gray-400 border-b block
+                                pl-8 pr-6 py-2 w-1/2 bg-white text-sm placeholder-gray-400
+                                text-gray-700 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
+                                @error('arribo')
+                                    <span class="text-gray-500 text-sm">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class=" flex flex-row justify-end">

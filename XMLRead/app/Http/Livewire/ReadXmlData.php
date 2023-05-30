@@ -16,9 +16,13 @@ class ReadXmlData extends Component
     use WithFileUploads;
     use LivewireAlert;
 
-    public $xml, $showData = false, $noDataYet = false, $claveProductoAlert= false, $repeatUuidAlert = false,
-            $repeatArriboAlert = false ;
+    public $xml, $showData = false, $noDataYet = false, $claveProductoAlert= false, $repeatUuidAlert = false;
     public $fecha,$rfc, $nombre, $folio, $uuid, $cantidad, $total, $claveProducto, $precioUnitario,$arribo;
+
+    protected $rules = [
+        'arribo' => 'required|size:12',
+    ];
+
 
     public function render()
     {
@@ -29,10 +33,6 @@ class ReadXmlData extends Component
     {
         Auth::logout();
         redirect(route('login'));
-    }
-
-    public function closeArriboAlert(){
-        $this->repeatArriboAlert = false;
     }
     //close "no data yet" warning alert
     public function closeNoDataYet(){
@@ -73,23 +73,12 @@ class ReadXmlData extends Component
             $this->total = floatval((string)$xmlData['Total']);
             $this->claveProducto = (string)$xmlData->Conceptos->Concepto['ClaveProdServ'];
             $this->precioUnitario = $this->total/$this->cantidad;
-            // getting arribo
-            $stringDescripcion = (string)$xmlData->Conceptos->Concepto['Descripcion'];
-            $posArribo = strpos($stringDescripcion,'BE');
-            $this->arribo = substr($stringDescripcion,$posArribo,12);
             //asking to eloquent if a data like this exists
             $repeatUuid = XmlData::where('uuid','=',$this->uuid)->exists();
-            $repeatArribo = XmlData::where('arribo','=',$this->arribo)->exists();
             //verify if uuid is repeated or already exist
             if($repeatUuid == false){
-                if($repeatArribo == false){
-                     //show data in DOM
-                     $this->showData = true;
-                }
-                else{
-                    $this->repeatArriboAlert = true;
-                }
-
+                //show data in the DOM
+                $this->showData = true;
             }
             else{
                 // show "repeatUuid" warning alert
@@ -104,9 +93,14 @@ class ReadXmlData extends Component
     // function who save data in the DB
     public function storeData()
     {
+        $this->validate();
+        //asking to eloquent if a data like this exists
+        $repeatArribo = XmlData::where('arribo','=',$this->arribo)->exists();
        //verify if "uuid" is repeated or already exist
         if(XmlData::where('uuid','=',$this->uuid)->exists() == false){
-            //Save data
+            if($repeatArribo == false)
+            {
+                //Save data
             XmlData::updateOrCreate([
                 'fecha' => $this->fecha,
                 'rfc' => $this->rfc,
@@ -118,7 +112,7 @@ class ReadXmlData extends Component
                 'precioUnitario' => $this->precioUnitario,
                 'claveProdServ' => $this->claveProducto,
                 'estado' => 'Sin usar',
-                'arribo' => $this->arribo
+                'arribo' => strtoupper($this->arribo)
             ]);
             if(QuantityData::where('rfc','=',$this->rfc)->exists() == false){
                 $montoTotal = $this->cantidad * 200;
@@ -131,6 +125,7 @@ class ReadXmlData extends Component
                 //success alert
                 $this->alert('success','La factura ha sido registrada');
                 $this->showData = false;
+                $this->arribo = null;
             }else{
                 $montoTotal = $this->cantidad * 200;
                 QuantityData::where('rfc','=',$this->rfc)->increment('cantidad_total',$this->cantidad);
@@ -138,6 +133,12 @@ class ReadXmlData extends Component
                 $this->alert('success','La factura ha sido registrada');
                 $this->showData = false;
             }
+            }
+            else{
+                //Error alert for arribo data repeat
+                $this->alert("error",'Este arribo ya ha sido ultilizado.');
+            }
+
         }else{
             //warning alert
             $this->repeatUuidAlert = true;
