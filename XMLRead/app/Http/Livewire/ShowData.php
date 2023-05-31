@@ -33,13 +33,7 @@ class ShowData extends Component
         Auth::logout();
         redirect(route('login'));
     }
-    //Change the status from "Sin pagar" to "Pagado"
-    // public function pagadoNoToSi($id)
-    // {
-    //     XmlData::where('id',$id)->update(['estado'=>'Pagado']);
-    //     $this->alert('success','Se ha pagado la factura!');
-    // }
-    // Delete a row
+    // Delete a row hacer modificaciones en facturaalfa
     public function destroy($id){
         $rfc = XmlData::where('id',$id)->first()->rfc;
         $cantidad = floatval(XmlData::where('id',$id)->first()->cantidad);

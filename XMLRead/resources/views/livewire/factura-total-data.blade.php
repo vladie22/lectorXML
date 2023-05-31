@@ -53,7 +53,7 @@
                                 sm:rounded-l-none border border-gray-400 border-b block
                                 pl-8 pr-6 py-2 w-3/4 bg-white text-sm placeholder-gray-400
                                 text-gray-700 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
-                                        @error('folio')
+                                        @error('folioAlfa')
                                             <span class="text-gray-500 text-sm">{{ $message }}</span>
                                         @enderror
 
@@ -69,17 +69,27 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-row justify-end mb-6 mr-6">
-                                    <button wire:click="generarFacturaClose()" type="button"
-                                        class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/4 text-lg
-                                    hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
-                                    shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
-                                    </button>
-
-                                    <button wire:click="generate()" type="button"
+                                    @if ($hideCancelar == false)
+                                        <button wire:click="generarFacturaClose()" type="button"
+                                            class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/4 text-lg
+                                hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
+                                shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
+                                        </button>
+                                        <button wire:click="generateFactura()" type="button"
                                         class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
                                 shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Generar
                                     </button>
+                                    @endif
+                                    @if ($hideCancelar == true)
+                                    <button wire:click="generateFactura()" type="button"
+                                    class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
+                            hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
+                            shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Actualizar
+                                </button>
+                                    @endif
+
+
                                 </div>
                             </form>
                         </div>
@@ -228,7 +238,8 @@
                                                                     class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                                     <span aria-hidden
                                                                         class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                                    <span class="relative">{{ $deriva->estado }}</span>
+                                                                    <span wire:click="sinUsar({{ $deriva->id }})"
+                                                                        class="pointerGG relative">{{ $deriva->estado }}</span>
                                                                 </span>
                                                             </p>
                                                         @elseif($deriva->estado == 'Sin usar')
@@ -298,8 +309,8 @@
                                                                     class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                                     <span aria-hidden
                                                                         class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                                    <span
-                                                                        class="relative">{{ $busqueda->estado }}</span>
+                                                                    <span wire:click="sinUsar({{ $busqueda->id }})"
+                                                                        class="pointerGG relative">{{ $busqueda->estado }}</span>
                                                                 </span>
                                                             </p>
                                                         @elseif($busqueda->estado == 'Sin usar')

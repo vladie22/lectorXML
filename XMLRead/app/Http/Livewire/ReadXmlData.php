@@ -95,7 +95,7 @@ class ReadXmlData extends Component
     {
         $this->validate();
         //asking to eloquent if a data like this exists
-        $repeatArribo = XmlData::where('arribo','=',$this->arribo)->exists();
+        $repeatArribo = XmlData::where('arribo','=',$this->arribo)->orWhere('arribo2','=',$this->arribo)->exists();
        //verify if "uuid" is repeated or already exist
         if(XmlData::where('uuid','=',$this->uuid)->exists() == false){
             if($repeatArribo == false)

@@ -18,6 +18,7 @@ class CreateFacturaAlfasTable extends Migration
             $table->string('folio')->nullable();
             $table->decimal('cantidad',12,2)->nullable();
             $table->decimal('total',12,2)->nullable();
+            $table->longText('descripcion')->nullable();
             $table->timestamps();
         });
     }
