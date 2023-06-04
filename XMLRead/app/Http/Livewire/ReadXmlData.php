@@ -77,8 +77,14 @@ class ReadXmlData extends Component
             $repeatUuid = XmlData::where('uuid','=',$this->uuid)->exists();
             //verify if uuid is repeated or already exist
             if($repeatUuid == false){
-                //show data in the DOM
+                if($this->claveProducto == '10101802'){
+                    //show data in the DOM
                 $this->showData = true;
+                }
+                else{
+                    $this->claveProductoAlert = true;
+                }
+
             }
             else{
                 // show "repeatUuid" warning alert

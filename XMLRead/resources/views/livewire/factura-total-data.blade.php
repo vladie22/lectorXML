@@ -1,24 +1,58 @@
 <div>
-
     <head>
         @include('base.nav-bar')
     </head>
-
     <body class="antialiased font-sans bg-gray-200">
         <div class="container mx-auto px-4 sm:px-8">
             <div class="py-8">
                 <div>
-                    <h2 class="text-2xl font-bold leading-tight">Facturas</h2>
+                    @if ($showEdit == false)
+                        <h2 class="text-2xl font-bold leading-tight">Facturas</h2>
+                    @endif
+                    @if ($showEdit == true)
+                        <h2 class="text-2xl font-bold leading-tight">Editar Factura {{ $folioAlfa }}</h2>
+                    @endif
+
                 </div>
                 {{-- Vista sin generar factura muestra solo el boton --}}
                 @if ($generarFactura == false)
                     <div class="py-4 grid grid-cols-2 gap-4">
                         <div>
-                            <button wire:click="generarFacturaShow()" type="button"
-                                class="text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
+                            @if ($showEdit == false)
+                                <button wire:click="generarFacturaShow()" type="button"
+                                    class="text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
                                     hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
                                     shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2 justify-center">Generar
-                            </button>
+                                    Factura
+                                </button>
+                            @endif
+                            @if ($showEdit == true)
+                                <div
+                                    class=" p-8 border border-sky-500 rounded-lg
+                            shadow shadow-slate-400">
+                                    <div class="flex flex-row justify-start">
+                                        <div class="text-2xl font-bold">
+                                            Cantidad Factura: {{ $cantidadTotalAlfaNueva }} Kg
+                                        </div>
+                                    </div>
+                                    <div class="mt-8 grid grid-cols-2 gap-2">
+                                        <div>
+                                            <button wire:click="editFacturaClose()" type="button"
+                                                class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/2 text-lg
+                                hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
+                                shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button wire:click="updateFactura()" type="button"
+                                                class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/2 text-lg
+                                hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
+                                shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Actualizar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                         <div class="flex flex-row justify-center items-center content-center ">
                             <div
@@ -29,9 +63,7 @@
                                 <div class="text-2xl font-bold">
                                     Disponibles: {{ $cantidadTotalFacturas }} Kg
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 @endif
@@ -44,11 +76,9 @@
                                      bg-slate-200 rounded-lg">
                                 @csrf
                                 <div class="grid grid-cols-2 gap-4 my-4 w-full">
-
-
                                     <div class="p-4">
-                                        <label class="font-semibold text-lg" for="folio">Folio</label>
-                                        <input id="folio" placeholder="#" wire:model="folioAlfa"
+                                        <label class="font-semibold text-lg" for="folioAlfa">Folio</label>
+                                        <input id="folioAlfa" placeholder="#" wire:model="folioAlfa"
                                             class="appearance-none rounded-r rounded-l
                                 sm:rounded-l-none border border-gray-400 border-b block
                                 pl-8 pr-6 py-2 w-3/4 bg-white text-sm placeholder-gray-400
@@ -64,32 +94,24 @@
                                                 Cantidad Factura: {{ $cantidadTotalAlfaNueva }} Kg
                                             </div>
                                         @endif
-
-
                                     </div>
                                 </div>
                                 <div class="flex flex-row justify-end mb-6 mr-6">
-                                    @if ($hideCancelar == false)
+                                    @if ($folioAlfaExist == false)
                                         <button wire:click="generarFacturaClose()" type="button"
                                             class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/4 text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
                                 shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
                                         </button>
                                         <button wire:click="generateFactura()" type="button"
-                                        class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
+                                            class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
                                 shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Generar
-                                    </button>
+                                        </button>
                                     @endif
-                                    @if ($hideCancelar == true)
-                                    <button wire:click="generateFactura()" type="button"
-                                    class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
-                            hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
-                            shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Actualizar
-                                </button>
+                                    @if ($folioAlfaExist == true)
+                                        <div class="font-bold text-base">Este folio ya existe!</div>
                                     @endif
-
-
                                 </div>
                             </form>
                         </div>
@@ -107,9 +129,8 @@
                         </div>
                     </div>
                 @endif
-
-                {{-- Vista seleccionar derivas para factura alfa --}}
-                @if ($generarFactura == true && $folioAlfa != null)
+                {{-- Vista seleccionar derivas para factura alfa NUEVA --}}
+                @if (($generarFactura == true && $folioAlfa != null && $folioAlfaExist == false) || $showEdit == true)
                     <div class="my-2 flex sm:flex-row flex-col">
                         <div class="flex flex-row mb-1 sm:mb-0">
                             <div class="relative">
@@ -238,8 +259,8 @@
                                                                     class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                                     <span aria-hidden
                                                                         class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                                    <span wire:click="sinUsar({{ $deriva->id }})"
-                                                                        class="pointerGG relative">{{ $deriva->estado }}</span>
+                                                                    <button wire:click="sinUsar({{ $deriva->id }})"
+                                                                        class="pointerGG relative">{{ $deriva->estado }}</button>
                                                                 </span>
                                                             </p>
                                                         @elseif($deriva->estado == 'Sin usar')
@@ -247,27 +268,19 @@
                                                                 class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
                                                                 <span aria-hidden
                                                                     class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                                <span wire:click="usado({{ $deriva->id }})"
-                                                                    class="pointerGG relative">{{ $deriva->estado }}</span>
+                                                                <button wire:click="usado({{ $deriva->id }})"
+                                                                    class="pointerGG relative">{{ $deriva->estado }}</button>
                                                             </span>
                                                         @endif
                                                     </td>
                                                 @endif
-                                                {{-- ELIMINAR REGISTROS --}}
-                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                    <button
-                                                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                                        <span aria-hidden
-                                                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="destroy({{ $factura->id }})"
-                                                            class="pointerGG relative">Eliminar</span>
-                                                    </button>
-                                                </td> --}}
                                             </tr>
                                         @endforeach
-                                        {{ $derivas->links() }}
-                                    @endif
+                                        <div>
+                                            {{ $derivas->links() }}
+                                        </div>
 
+                                    @endif
                                     @if ($searchData)
                                         @foreach ($busquedas as $busqueda)
                                             <tr>
@@ -309,8 +322,8 @@
                                                                     class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                                     <span aria-hidden
                                                                         class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                                    <span wire:click="sinUsar({{ $busqueda->id }})"
-                                                                        class="pointerGG relative">{{ $busqueda->estado }}</span>
+                                                                    <button wire:click="sinUsar({{ $busqueda->id }})"
+                                                                        class="pointerGG relative">{{ $busqueda->estado }}</button>
                                                                 </span>
                                                             </p>
                                                         @elseif($busqueda->estado == 'Sin usar')
@@ -318,39 +331,27 @@
                                                                 class="relative inline-block px-3 py-1 font-semibold text-orange-900 leading-tight">
                                                                 <span aria-hidden
                                                                     class="absolute inset-0 bg-orange-200 opacity-50 rounded-full"></span>
-                                                                <span wire:click="usado({{ $busqueda->id }})"
-                                                                    class="pointerGG relative">{{ $busqueda->estado }}</span>
+                                                                <button wire:click="usado({{ $busqueda->id }})"
+                                                                    class="pointerGG relative">{{ $busqueda->estado }}</button>
                                                             </span>
                                                         @endif
-
                                                     </td>
                                                 @endif
-                                                {{-- <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                    <span
-                                                        class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                                                        <span aria-hidden
-                                                            class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                                                        <span wire:click="destroy({{ $busqueda->id }})"
-                                                            class="pointerGG relative">Eliminar</span>
-                                                    </span>
-                                                </td> --}}
                                             </tr>
                                         @endforeach
-                                        {{ $busquedas->links() }}
+                                        <div>
+                                            {{ $busquedas->links() }}
+                                        </div>
+
                                     @endif
 
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
                 @endif
-
-
-
-                {{-- 555555555555555555555555555555555555555555555555555555555555555555555555555 --}}
                 {{-- Vista de facturas generadas --}}
-                @if ($generarFactura == false)
+                @if ($generarFactura == false && $showEdit == false)
                     <div class="my-8 flex sm:flex-row flex-col">
                         <div class="flex flex-row mb-1 sm:mb-0">
                             <div class="relative">
@@ -416,6 +417,14 @@
                                             class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
                                             MONTO TOTAL ($)
                                         </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
+                                            DESCRIPCION
+                                        </th>
+                                        <th
+                                            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-base font-semibold text-gray-600 uppercase tracking-wider">
+                                            EDITAR
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -436,6 +445,29 @@
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         ${{ number_format($factura->total, 2, '.', ',') }}
                                                     </p>
+                                                </td>
+                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                    <button wire:click="showDescripcion({{ $factura->id }})"
+                                                        class="font-medium text-lg text-gray-900 hover:text-blue-600  hover:underline">
+                                                        Mostrar
+                                                    </button>
+                                                </td>
+                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                    <div class='flex items-center justify-start h-8'>
+                                                        <div class="m-5">
+                                                            <button wire:click="edit({{ $factura->folio }})"
+                                                                class="flex p-2.5 bg-blue-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300 text-white">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="h-6 w-6" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -460,6 +492,29 @@
                                                     <p class="text-gray-900 whitespace-no-wrap">
                                                         ${{ number_format($searchFactura->total, 2, '.', ',') }}
                                                     </p>
+                                                </td>
+                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                    <button wire:click="showDescripcion({{ $searchFactura->id }})"
+                                                        class="font-medium text-lg text-gray-900 hover:text-blue-600  hover:underline">
+                                                        Mostrar
+                                                    </button>
+                                                </td>
+                                                <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                    <div class='flex items-center justify-start h-8'>
+                                                        <div class="m-5">
+                                                            <button wire:click="edit({{ $searchFactura->folio }})"
+                                                                class="flex p-2.5 bg-blue-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300 text-white">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="h-6 w-6" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    stroke-width="2">
+                                                                    <path stroke-linecap="round"
+                                                                        stroke-linejoin="round"
+                                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach

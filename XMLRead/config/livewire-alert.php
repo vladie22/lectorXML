@@ -7,7 +7,7 @@
 return [
     'alert' => [
         'position' => 'top-center',
-        'timer' => 5000,
+        'timer' => 2000,
         'popup' => true,
         'text' => null,
         'showCancelButton' => false,
