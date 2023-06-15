@@ -1,6 +1,6 @@
 <div>
     <head>
-        @include('base.nav-bar')
+        @include('livewire.nav-bar')
     </head>
     <body class="antialiased font-sans bg-gray-200">
         <div class="container mx-auto px-4 sm:px-8">
@@ -16,11 +16,11 @@
                 </div>
                 {{-- Vista sin generar factura muestra solo el boton --}}
                 @if ($generarFactura == false)
-                    <div class="py-4 grid grid-cols-2 gap-4">
+                    <div class="py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             @if ($showEdit == false)
                                 <button wire:click="generarFacturaShow()" type="button"
-                                    class="text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
+                                    class="text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-full md:w-1/2 sm:w-1/4 text-lg
                                     hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
                                     shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2 justify-center">Generar
                                     Factura
@@ -28,24 +28,24 @@
                             @endif
                             @if ($showEdit == true)
                                 <div
-                                    class=" p-8 border border-sky-500 rounded-lg
+                                    class="sm:p-8 border border-sky-500 rounded-lg
                             shadow shadow-slate-400">
-                                    <div class="flex flex-row justify-start">
+                                    <div class="flex flex-row justify-center mt-4 sm:justify-start">
                                         <div class="text-2xl font-bold">
                                             Cantidad Factura: {{ $cantidadTotalAlfaNueva }} Kg
                                         </div>
                                     </div>
-                                    <div class="mt-8 grid grid-cols-2 gap-2">
-                                        <div>
+                                    <div class="p-4 sm:p-4 mt-2 sm:mt-8 grid grid-cols-2 gap-2">
+                                        <div class="flex flex-row justify-center">
                                             <button wire:click="editFacturaClose()" type="button"
-                                                class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/2 text-lg
+                                                class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 xl:w-1/2 md:w-full sm:w-full text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
                                 shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
                                             </button>
                                         </div>
-                                        <div>
+                                        <div class="flex flex-row justify-center">
                                             <button wire:click="updateFactura()" type="button"
-                                                class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/2 text-lg
+                                                class="text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 xl:w-1/2 md:w-full sm:w-full text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
                                 shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Actualizar
                                             </button>
@@ -69,7 +69,7 @@
                 @endif
                 {{-- Vista para generar factura --}}
                 @if ($generarFactura == true)
-                    <div class="grid grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <div>
                             <form action="" method="POST" enctype="multipart/form-data"
                                 class="border border-sky-500 divide-y divide-slate-200
@@ -81,7 +81,7 @@
                                         <input id="folioAlfa" placeholder="#" wire:model="folioAlfa"
                                             class="appearance-none rounded-r rounded-l
                                 sm:rounded-l-none border border-gray-400 border-b block
-                                pl-8 pr-6 py-2 w-3/4 bg-white text-sm placeholder-gray-400
+                                pl-8 pr-6 py-2 w-full sm:w-3/4 bg-white text-sm placeholder-gray-400
                                 text-gray-700 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" />
                                         @error('folioAlfa')
                                             <span class="text-gray-500 text-sm">{{ $message }}</span>
@@ -90,23 +90,23 @@
                                     </div>
                                     <div class="p-4">
                                         @if ($folioAlfa != null)
-                                            <div class="text-2xl font-bold">
+                                            <div class="mt-4 md:text-lg xl:text-2xl font-bold">
                                                 Cantidad Factura: {{ $cantidadTotalAlfaNueva }} Kg
                                             </div>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="flex flex-row justify-end mb-6 mr-6">
+                                <div class="flex flex-row justify-center md:justify-center xl:justify-end p-4  mb-2 ">
                                     @if ($folioAlfaExist == false)
                                         <button wire:click="generarFacturaClose()" type="button"
-                                            class="text-white bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 w-1/4 text-lg
+                                            class="text-white ml-2 mr-2 bg-gradient-to-r mt-4 from-red-500 via-red-600 to-red-700 md:w-full xl:w-1/4 text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg
-                                shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Cancelar
+                                shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg px-5 py-2.5 text-center sm:mr-2 mb-2">Cancelar
                                         </button>
                                         <button wire:click="generateFactura()" type="button"
-                                            class="ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 w-1/4 text-lg
+                                            class="ml-2 md:ml-2 xl:ml-8 text-white bg-gradient-to-r mt-4 from-blue-500 via-blue-600 to-blue-700 md:w-full xl:w-1/4 text-lg
                                 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg
-                                shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mr-2 mb-2">Generar
+                                shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg px-5 py-2.5 text-center mb-2">Generar
                                         </button>
                                     @endif
                                     @if ($folioAlfaExist == true)

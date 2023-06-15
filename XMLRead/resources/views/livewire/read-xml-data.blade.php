@@ -1,13 +1,13 @@
 <div>
 
     <head>
-        @include('base.nav-bar')
+        @include('livewire.nav-bar')
     </head>
 
     <body>
-        <form action="" method="POST" enctype="multipart/form-data" class="grid grid-cols-3 gap-6 my-4 mx-4 p-12">
+        <form action="" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 sm:grid-cols-3 gap-6 my-4 mx-4 p-12">
             @csrf
-            <div class="rounded-lg border border-sky-500 divide-y divide-slate-200 w-3/4">
+            <div class="rounded-lg border border-sky-500 divide-y divide-slate-200 w-full">
                 <div class="mx-8 my-6">
                     <label class="font-bold text-xl my-5" for="formFile">Adjuntar XML</label>
                     <input wire:model="xml"
@@ -33,11 +33,6 @@
                             <span class="text-gray-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- <div class="mb-2">
-                        <div wire:loading.delay.longer>
-                            <img class="scale-50" src="{{ asset('images/pacman.gif') }}" alt="">
-                        </div>
-                    </div> --}}
                 </div>
                 <div class="flex flex-row justify-center mb-4">
                     <button wire:click="readXml()" type="button"

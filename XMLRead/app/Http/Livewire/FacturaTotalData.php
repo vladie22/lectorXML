@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\XmlData;
+use Livewire\Component;
 use App\Models\FacturaAlfa;
 use App\Models\QuantityData;
-use App\Models\XmlData;
+use Illuminate\Support\Facades\Auth;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
-use Livewire\Component;
 
 class FacturaTotalData extends Component
 {
@@ -14,7 +15,7 @@ class FacturaTotalData extends Component
     public $folioAlfa, $cantidad, $cantidadTotalFacturas, $descripcion, $generarFactura = false,
         $search,  $searchOptions = 'folio', $limit = 5, $cantidadTotalAlfaNueva,
         $searchData, $searchOptionsData = 'uuid', $array = array(), $folioAlfaExist = false,
-        $cancelarUsado = array(), $showEdit = false, $folioAlfaEdit;
+        $cancelarUsado = array(), $showEdit = false, $folioAlfaEdit, $mobileMenu;
 
     protected $rules = [
         'folioAlfa' => 'required',
@@ -54,6 +55,23 @@ class FacturaTotalData extends Component
             'searchFacturas' => FacturaAlfa::where($searchOptions, 'like', $search)
                 ->orderBy('cantidad', 'DESC')->simplePaginate($limit)
         ]);
+    }
+    public function showMobileMenu()
+    {
+        if($this->mobileMenu == true)
+        {
+            $this->mobileMenu = false;
+        }
+        else
+        {
+            $this->mobileMenu = true;
+        }
+    }
+
+    public function logoutUser()
+    {
+        Auth::logout();
+        redirect(route('login'));
     }
 
     public function usado($id)

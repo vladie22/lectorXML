@@ -14,7 +14,7 @@ class ShowData extends Component
     use LivewireAlert;
     use WithPagination;
     //declare public variables and set the initial value
-    public $search, $searchOptions = 'nombre', $limit = 5;
+    public $search, $searchOptions = 'nombre', $limit = 5, $mobileMenu = false;
 
 
     public function render()
@@ -32,6 +32,17 @@ class ShowData extends Component
     {
         Auth::logout();
         redirect(route('login'));
+    }
+    public function showMobileMenu()
+    {
+        if($this->mobileMenu == true)
+        {
+            $this->mobileMenu = false;
+        }
+        else
+        {
+            $this->mobileMenu = true;
+        }
     }
     // Delete a row hacer modificaciones en facturaalfa
     public function destroy($id){

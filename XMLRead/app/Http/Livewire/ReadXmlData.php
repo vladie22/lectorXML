@@ -18,7 +18,7 @@ class ReadXmlData extends Component
 
     public $xml, $showData = false, $noDataYet = false, $claveProductoAlert= false, $repeatUuidAlert = false;
     public $fecha,$rfc, $nombre, $folio, $uuid, $cantidad, $total, $claveProducto, $precioUnitario,$arribo;
-
+    public $mobileMenu = false;
     protected $rules = [
         'arribo' => 'required|size:12',
     ];
@@ -27,6 +27,18 @@ class ReadXmlData extends Component
     public function render()
     {
         return view('livewire.read-xml-data');
+    }
+
+    public function showMobileMenu()
+    {
+        if($this->mobileMenu == true)
+        {
+            $this->mobileMenu = false;
+        }
+        else
+        {
+            $this->mobileMenu = true;
+        }
     }
 
     public function logoutUser()

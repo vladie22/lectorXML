@@ -1,7 +1,7 @@
 <div>
 
     <head>
-        @include('base.nav-bar')
+        @include('livewire.nav-bar')
     </head>
 
     <body class="antialiased font-sans bg-gray-200">
