@@ -14,8 +14,11 @@ class ShowData extends Component
     use LivewireAlert;
     use WithPagination;
     //declare public variables and set the initial value
-    public $search, $searchOptions = 'nombre', $limit = 5, $mobileMenu = false;
+    public $search, $searchOptions = 'nombre', $limit = 5, $mobileMenu = false, $deleteId;
 
+    protected $listeners =[
+        'confirmed'
+    ];
 
     public function render()
     {
@@ -46,14 +49,29 @@ class ShowData extends Component
     }
     // Delete a row hacer modificaciones en facturaalfa
     public function destroy($id){
-        $rfc = XmlData::where('id',$id)->first()->rfc;
-        $cantidad = floatval(XmlData::where('id',$id)->first()->cantidad);
-        XmlData::destroy($id);
+        $this->deleteId = $id;
+
+        $this->alert('warning', '¿Quiere eliminar esta deriva?', [
+            'showConfirmButton' => true,
+            'confirmButtonText' => 'Eliminar',
+            'onConfirmed' => 'confirmed',
+            'showCancelButton' => true,
+            'cancelButtonText' => 'Cancelar',
+            'allowOutsideClick' => false,
+            'timer' => null
+        ]);
+    }
+    public function confirmed()
+    {
+        $rfc = XmlData::where('id',$this->deleteId)->first()->rfc;
+        $cantidad = floatval(XmlData::where('id',$this->deleteId)->first()->cantidad);
+        XmlData::destroy($this->deleteId);
         QuantityData::where('rfc',$rfc)->decrement('cantidad_total',$cantidad);
         if(floatval(QuantityData::where('rfc',$rfc)->first()->cantidad_total) == 0){
             $idCantidadTotal = QuantityData::where('rfc',$rfc)->first()->id;
             QuantityData::destroy($idCantidadTotal);
         }
-        $this->alert('success','La factura ha sido eliminada!');
+        $this->deleteId = null;
     }
+
 }
